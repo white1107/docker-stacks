@@ -24,6 +24,7 @@ RUN apt-get update --yes && \
     libsm6 \
     libxext-dev \
     libxrender1 \
+    libopenmpi-dev \
     lmodern \
     netcat \
     # nbconvert dependencies
@@ -32,6 +33,9 @@ RUN apt-get update --yes && \
     texlive-fonts-recommended \
     texlive-plain-generic && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+RUN pip install mpi4py
 
 # Create alternative for nano -> nano-tiny
 RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
