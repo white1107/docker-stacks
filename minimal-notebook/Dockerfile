@@ -8,6 +8,14 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 USER root
 
+USER root
+RUN apt-get update
+RUN pip install -U pip
+
+# mpi4py
+RUN apt-get install -y libopenmpi-dev
+RUN pip install mpi4py
+
 # Install all OS dependencies for fully functional notebook server
 RUN apt-get update --yes && \
     apt-get install --yes --no-install-recommends \
@@ -33,10 +41,6 @@ RUN apt-get update --yes && \
     texlive-plain-generic && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip install -U pip
-
-RUN apt-get install -y libopenmpi-dev
-RUN pip install mpi4py
 
 # Create alternative for nano -> nano-tiny
 RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
