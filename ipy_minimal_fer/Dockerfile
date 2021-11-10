@@ -18,7 +18,7 @@ RUN pip install mpi4py
 RUN pip install pyscf openfermion
 RUN pip install openfermionpyscf
 RUN pip install qulacs
-RUN pip install netket==3.0.3
+RUN pip install ipyparallel
 
 # Install all OS dependencies for fully functional notebook server
 RUN apt-get update --yes && \
