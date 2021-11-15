@@ -15,8 +15,9 @@ RUN pip install -U pip
 # mpi4py
 RUN apt-get install -y libopenmpi-dev
 RUN pip install mpi4py
+RUN pip install mpi4jax 
 RUN pip install --upgrade pip 
-RUN pip install jax[cuda11_cudnn82] -f https://storage.googleapis.com/jax-releases/jax_releases.html
+RUN pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_releases.html  # Note: wheels only available on linux.
 RUN pip install pyscf openfermion
 RUN pip install openfermionpyscf
 RUN pip install qulacs
