@@ -1,0 +1,56 @@
+# Copyright (c) Jupyter Development Team.
+# Distributed under the terms of the Modified BSD License.
+ARG OWNER=jupyter
+ARG BASE_CONTAINER=$OWNER/base-notebook
+FROM $BASE_CONTAINER
+
+LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
+
+USER root
+
+USER root
+RUN apt-get update
+RUN pip install -U pip
+
+# mpi4py
+RUN apt-get install -y libopenmpi-dev
+RUN pip install mpi4py
+RUN pip install --upgrade pip 
+RUN pip install mpi4jax
+RUN pip install --upgrade jax jaxlib==0.1.69+cuda111 -f https://storage.googleapis.com/jax-releases/jax_releases.html
+RUN pip install pyscf openfermion
+RUN pip install openfermionpyscf
+RUN pip install qulacs
+RUN pip install netket==3.0.3
+
+# Install all OS dependencies for fully functional notebook server
+RUN apt-get update --yes && \
+    apt-get install --yes --no-install-recommends \
+    # Common useful utilities
+    git \
+    nano-tiny \
+    tzdata \
+    unzip \
+    vim-tiny \
+    # git-over-ssh
+    openssh-client \
+    # TODO: check if these are needed and describe
+    inkscape \
+    libsm6 \
+    libxext-dev \
+    libxrender1 \
+    lmodern \
+    netcat \
+    # nbconvert dependencies
+    # https://nbconvert.readthedocs.io/en/latest/install.html#installing-tex
+    texlive-xetex \
+    texlive-fonts-recommended \
+    texlive-plain-generic && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+# Create alternative for nano -> nano-tiny
+RUN update-alternatives --install /usr/bin/nano nano /bin/nano-tiny 10
+
+# Switch back to jovyan to avoid accidental container runs as root
+USER ${NB_UID}
